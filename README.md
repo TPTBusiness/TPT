@@ -150,6 +150,50 @@ Install TA-Lib:
 Follow the TA-Lib installation guide for your system to enable technical indicator calculations.
 
 
+**📊 Collecting Historical Kline Data**
+
+To run the TPT Scalping Trading Model, you need historical 1-minute kline data for BTCUSDT in Parquet format, stored at `data/klines/klines_BTCUSDT_default.parquet`. The `utils/collect_data.py` script uses the `python-binance` library to fetch this data from Binance's Spot API and save it with the required columns: `timestamp`, `open`, `high`, `low`, `close`, and `volume`.
+
+**Steps to Collect Data**
+
+1. **Ensure Dependencies**:
+   Ensure `python-binance`, `pandas`, and `pyarrow` are installed. These are not included in `requirements.txt` by default, so add them if necessary:
+   ```bash
+   echo -e "python-binance\npyarrow" >> requirements.txt
+   pip install -r requirements.txt
+
+2. **Prepare the Script:**
+The utils/collect_data.py script is included in the repository. It fetches 30 days of historical 1-minute kline data for BTCUSDT by default (e.g., from 2025-08-08 to 2025-09-07, as future data like the backtest period 2025-05-27 to 2025-06-10 is unavailable). The data is saved to data/klines/klines_BTCUSDT_default.parquet.
+
+
+3. **Run the Script:**
+Activate the virtual environment and execute the script:
+`source .venv/bin/activate`  # On Windows: `.venv\Scripts\activate`
+`python utils/collect_data.py`
+Expected Output:
+- ✅ Initialized Binance Spot client for BTCUSDT 1m
+- Fetching klines...
+- ✅ Fetched 1000 klines, total: 1000
+- ✅ Processed 43200 kline records from 2025-08-08 00:00:00 to 2025-09-07 23:59:00
+- ✅ Saved kline data to: data/klines/klines_BTCUSDT_default.parquet
+- ✅ Verified saved data: 43200 rows with columns ['timestamp', 'open', 'high', 'low', 'close', 'volume']
+- ✅ Binance client closed
+
+
+4. **Verify the Data:**
+Check that the Parquet file exists:
+`ls data/klines/`
+Expected output: klines_BTCUSDT_default.parquet
+Verify the columns:
+`import pandas as pd
+df = pd.read_parquet('data/klines/klines_BTCUSDT_default.parquet')
+print(df.columns)`  # Expected: ['timestamp', 'open', 'high', 'low', 'close', 'volume']
+
+
+6. **Use with Backtest:**
+The generated klines_BTCUSDT_default.parquet is compatible with example_simulation.py. Ensure it is in data/klines/ before running the backtest:
+bashpython example_simulation.py
+
 Prepare Data and Models:
 Place kline data in data/klines/ (e.g., klines_BTCUSDT_default.parquet).
 Place trained models in backtesting/results/models/ (ppo_checkpoint.zip, transformer_model.pth).

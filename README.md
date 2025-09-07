@@ -3,7 +3,7 @@
 📚 Overview
 The TPT Scalping Trading Model is a cutting-edge, high-frequency trading system tailored for the BTCUSDT pair on a 1-minute timeframe. It harnesses a hybrid architecture that blends a Transformer neural network for precise market trend forecasting with Proximal Policy Optimization (PPO) reinforcement learning for optimized trade execution. Designed for the volatile cryptocurrency market, this model thrives on capturing short-term price movements through rapid, frequent trades. A robust suite of technical indicators and a realistic trading environment make it a powerful tool for scalping enthusiasts.
 
-💡 Note: This open-source model is shared for educational and networking purposes. Premium models, boasting win rates up to 25-30%, drawdowns below 20%, and adaptive strategies for diverse market conditions, are available for purchase. Contact TPTBusiness@proton.me for inquiries about premium models, customizations, or licensing.
+💡 Note: This open-source model is shared for educational and networking purposes. Premium models, boasting win rates up to 25-30%, drawdowns below 20%, and adaptive strategies for diverse market conditions, are available for purchase. Contact **TPTBusiness@proton.me** for inquiries about premium models, customizations, or licensing.
 
 
 ## ✨ Features
@@ -44,7 +44,7 @@ The model was backtested from 2025-05-27 14:35:00 to 2025-06-10 11:54:00 (13.89 
 
 
 
-### ⚠️ Disclaimer: These metrics are from a backtest and may vary in live trading due to market dynamics, slippage, and latency. Premium models offer win rates of 25-30%, drawdowns below 20%, and enhanced adaptability. Contact TPTBusiness@proton.me for details.
+**⚠️ Disclaimer: These metrics are from a backtest and may vary in live trading due to market dynamics, slippage, and latency. Premium models offer win rates of 25-30%, drawdowns below 20%, and enhanced adaptability. Contact TPTBusiness@proton.me for details.**
 
 
 **⚙️ Configuration**
@@ -66,6 +66,141 @@ The TPT Scalping Trading Model is a state-of-the-art system designed to excel in
 
 🔍 Market Analysis with Transformer Neural Network
 The model employs a **Transformer neural network** to analyze 32-step sequences of market data, incorporating 15 technical indicators. It predicts short-term price trends with high accuracy, providing a probability of upward price movements. This predictive power enables the model to identify high-probability trading opportunities in volatile conditions.
+
+# 🛠️ Setup and Directory Structure
+To run the TPT Scalping Trading Model, you need to prepare specific data and model files and place them in the correct directory structure. The provided example_simulation.py script is a demonstration for backtesting the model with historical BTCUSDT 1-minute kline data.
+Required Files
+- Kline Data: Historical BTCUSDT 1-minute kline data in Parquet format (e.g., klines_BTCUSDT_default.parquet). Obtain this via CCXT or other data providers.
+- PPO Model: Trained PPO model (ppo_checkpoint.zip) for reinforcement learning-based trade decisions.
+- Transformer Model: Trained Transformer model (transformer_model.pth) for market trend prediction.
+- Parameters File: Configuration file (parameters.json) defining trading parameters like feature_cols, start_capital, etc.
+- Scaler (Optional): StandardScaler file (scaler.pkl) for data normalization. If missing, the script will create one automatically using the kline data.
+
+**Directory Structure**
+Place the files in the following structure:
+```
+TPT/
+├── backtesting/
+│   ├── results/
+│   │   ├── models/
+│   │   │   ├── ppo_checkpoint.zip
+│   │   │   ├── transformer_model.pth
+│   │   │   ├── scaler.pkl  # Optional, created if missing
+│   │   ├── parameters.json
+├── data/
+│   ├── klines/
+│   │   ├── klines_BTCUSDT_default.parquet
+├── example_simulation.py
+├── README.md
+├── requirements.txt
+├── LICENSE
+├── .gitignore
+```
+parameters.json:
+```
+{
+    "symbol": "BTCUSDT",
+    "timeframe": "1m",
+    "start_capital": 3000,
+    "max_leverage": 100,
+    "max_stop_loss_pct": 0.03,
+    "max_take_profit_pct": 0.04,
+    "max_open_positions": 10,
+    "min_profit_threshold": 0.0,
+    "seq_length": 32,
+    "feature_cols": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "rsi",
+        "macd",
+        "sma",
+        "ema",
+        "atr",
+        "bb_upper",
+        "bb_lower",
+        "vwap",
+        "volume_profile",
+        "fibonacci_levels"
+    ],
+    "ppo_model_path": "/home/nico/Dev/TPT-1/models/runs/2025-09-06_13-10-04/checkpoints/ppo_checkpoint_400000_steps.zip",
+    "transformer_model_path": "/home/nico/Dev/TPT-1/models/runs/2025-09-06_11-42-18/checkpoints/transformer_checkpoint_epoch_52.pth",
+    "backtest_start_time": "2025-05-27 14:35:00",
+    "backtest_end_time": "2025-06-10 11:54:00",
+    "total_time_days": 13.888194444444444
+}
+```
+**Installation Steps**
+
+Clone the Repository:```git clone https://github.com/TPTBusiness/TPT.git
+cd TPT```
+
+
+Create a Virtual Environment: ```python -m venv .venv
+source .venv/bin/activate  # On Windows: .venv\Scripts\activate```
+
+
+Install Dependencies:
+```pip install -r requirements.txt```
+
+See requirements.txt for the list of required libraries (pandas, numpy, torch, stable-baselines3, scikit-learn, tqdm, gymnasium, ccxt, ta).
+Install TA-Lib:
+Follow the TA-Lib installation guide for your system to enable technical indicator calculations.
+
+
+Prepare Data and Models:
+Place kline data in data/klines/ (e.g., klines_BTCUSDT_default.parquet).
+Place trained models in backtesting/results/models/ (ppo_checkpoint.zip, transformer_model.pth).
+Create or place parameters.json in backtesting/results/.
+Optionally, place scaler.pkl in backtesting/results/models/ (created automatically if missing).
+
+
+Testing the Model
+To test the model, run the example_simulation.py script, which executes a 1000-step backtest with a forced buy action at step 5 for demonstration purposes. The script logs trade details, rewards, and model predictions.
+
+Ensure Files Are in Place:Verify that the following files are correctly placed:
+
+- data/klines/klines_BTCUSDT_default.parquet
+- backtesting/results/models/ppo_checkpoint.zip
+- backtesting/results/models/transformer_model.pth
+- backtesting/results/parameters.json
+- backtesting/results/models/scaler.pkl (optional)
+
+
+**Run the Backtest:**
+```python example_simulation.py```
+
+The script will:
+- Load the models, parameters, and kline data.
+- Create scaler.pkl if it does not exist.
+- Run a 1000-step backtest, logging balance, profit, positions, and trade details.
+- Output a summary of the simulation results (e.g., final balance, total profit, total trades).
+
+
+Verify Output:Check the console output for logs like:
+✅ New scaler created and saved to: backtesting/results/models/scaler.pkl
+[Step 5] Forcing buy action: [0.0, 0.5, 0.01, 0.02, 50.0]
+[Step 1000] Test run completed: Steps=1000, Final Balance=3208.99, Total Profit=2208.99, Total Trades=94
+
+
+
+💡 Note: If you lack trained models or kline data, you must generate them. Refer to the CCXT documentation for fetching kline data or contact **TPTBusiness@proton.me** for guidance on training models.
+📖 Usage
+
+**Run the Simulation:**
+```python example_simulation.py```
+
+This executes a 1000-step backtest, forcing a buy action at step 5 for testing, and logs trade details, rewards, and model predictions. If scaler.pkl is missing, it will be created automatically using the kline data.
+
+**Customize:**
+
+Modify parameters.json in backtesting/results/ to adjust trading parameters (e.g., start_capital, max_leverage).
+Extend the script for live trading by integrating a binance_client (see CCXT documentation).
+
+
+**Premium Models:The provided example_simulation.py is a demonstration script. For access to premium models with 25-30% win rates, drawdowns below 20%, and live trading capabilities, contact TPTBusiness@proton.me.**
 
 
 
@@ -103,25 +238,25 @@ Adaptive Strategies: Dynamically adjusts to trending, ranging, or volatile marke
 Live Trading Optimization: Seamless real-time data integration and low-latency execution.
 Customizations: Tailored for specific assets, timeframes, or risk profiles.
 
-For pricing, licensing, or inquiries, contact TPTBusiness@proton.me.
+For pricing, licensing, or inquiries, contact **TPTBusiness@proton.me**.
 
 **🛠️ Installation**
 To set up the open-source model:
 
-Clone the repository:git clone https://github.com/TPTBusiness/TPT.git
+Clone the repository:```git clone https://github.com/TPTBusiness/TPT.git```
 
 
-Install dependencies:pip install torch stable-baselines3 pandas ta numpy
+Install dependencies:```pip install torch stable-baselines3 pandas ta numpy```
 
 
 Install TA-Lib for technical indicators (see TA-Lib documentation for setup).
 
 
 **📖 Usage**
-This repository is designed for educational and networking purposes. The core model demonstrates a powerful scalping framework, but its full implementation is proprietary. For access to the complete system, collaboration opportunities, or premium models with enhanced performance, contact TPTBusiness@proton.me.
+This repository is designed for educational and networking purposes. The core model demonstrates a powerful scalping framework, but its full implementation is proprietary. For access to the complete system, collaboration opportunities, or premium models with enhanced performance, contact **TPTBusiness@proton.me**.
 
 **📜 License**
-Licensed under GNU AGPL v3.0. Modifications must be open-sourced, and commercial use requires permission. Contact TPTBusiness@proton.me for commercial licensing inquiries.
+Licensed under GNU AGPL v3.0. Modifications must be open-sourced, and commercial use requires permission. Contact **TPTBusiness@proton.me** for commercial licensing inquiries.
 
 **🙌 Acknowledgments**
 

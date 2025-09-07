@@ -1,0 +1,33 @@
+{
+    "symbol": "BTCUSDT",
+    "timeframe": "1m",
+    "start_capital": 3000,
+    "max_leverage": 100,
+    "max_stop_loss_pct": 0.03,
+    "max_take_profit_pct": 0.04,
+    "max_open_positions": 10,
+    "min_profit_threshold": 0.0,
+    "seq_length": 32,
+    "feature_cols": [
+        "open",
+        "high",
+        "low",
+        "close",
+        "volume",
+        "rsi",
+        "macd",
+        "sma",
+        "ema",
+        "atr",
+        "bb_upper",
+        "bb_lower",
+        "vwap",
+        "volume_profile",
+        "fibonacci_levels"
+    ],
+    "ppo_model_path": "/home/nico/Dev/TPT-1/models/runs/2025-09-06_13-10-04/checkpoints/ppo_checkpoint_400000_steps.zip",
+    "transformer_model_path": "/home/nico/Dev/TPT-1/models/runs/2025-09-06_11-42-18/checkpoints/transformer_checkpoint_epoch_52.pth",
+    "backtest_start_time": "2025-05-27 14:35:00",
+    "backtest_end_time": "2025-06-10 11:54:00",
+    "total_time_days": 13.888194444444444
+}

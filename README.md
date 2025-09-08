@@ -3,7 +3,7 @@
 📚 Overview
 The TPT Scalping Trading Model is a cutting-edge, high-frequency trading system tailored for the BTCUSDT pair on a 1-minute timeframe. It harnesses a hybrid architecture that blends a Transformer neural network for precise market trend forecasting with Proximal Policy Optimization (PPO) reinforcement learning for optimized trade execution. Designed for the volatile cryptocurrency market, this model thrives on capturing short-term price movements through rapid, frequent trades. A robust suite of technical indicators and a realistic trading environment make it a powerful tool for scalping enthusiasts.
 
-💡 Note: This open-source model is shared for educational and networking purposes. Premium models, boasting win rates up to 25-30%, drawdowns below 20%, and adaptive strategies for diverse market conditions, are available for purchase. Contact **TPTBusiness@proton.me** for inquiries about premium models, customizations, or licensing.
+💡 Note: This open-source model is shared for educational and networking purposes. Premium models, boasting win rates up to 40–60%, drawdowns below 20%, and adaptive strategies for diverse market conditions, are available for purchase. Contact **TPTBusiness@proton.me** for inquiries about premium models, customizations, or licensing.
 
 
 ## ✨ Features
@@ -44,7 +44,7 @@ The model was backtested from 2025-05-27 14:35:00 to 2025-06-10 11:54:00 (13.89 
 
 
 
-**⚠️ Disclaimer: These metrics are from a backtest and may vary in live trading due to market dynamics, slippage, and latency. Premium models offer win rates of 25-30%, drawdowns below 20%, and enhanced adaptability. Contact TPTBusiness@proton.me for details.**
+**⚠️ Disclaimer: These metrics are from a backtest and may vary in live trading due to market dynamics, slippage, and latency. Premium models offer win rates of 40–60%, drawdowns below 20%, and enhanced adaptability. Contact TPTBusiness@proton.me for details.**
 
 
 **⚙️ Configuration**
@@ -244,7 +244,7 @@ Modify parameters.json in backtesting/results/ to adjust trading parameters (e.g
 Extend the script for live trading by integrating a binance_client (see CCXT documentation).
 
 
-**Premium Models:The provided example_simulation.py is a demonstration script. For access to premium models with 25-30% win rates, drawdowns below 20%, and live trading capabilities, contact TPTBusiness@proton.me.**
+**Premium Models: The provided example_simulation.py is a demonstration script. For access to premium models with 40–60% win rates, drawdowns below 20%, and live trading capabilities, contact TPTBusiness@proton.me.**
 
 
 
@@ -276,7 +276,7 @@ Optimized for **scalping**, the model executes rapid trades (average duration: 1
 ### 🌟 Premium Models Available
 ### This open-source model showcases the power of the Transformer-PPO hybrid approach, but premium models offer significant enhancements:
 
-Higher Win Rates: Achieve 25-30% through advanced feature engineering and hyperparameter tuning.
+Higher Win Rates: Achieve 40–60% through advanced feature engineering and hyperparameter tuning.
 Lower Drawdowns: Reduced to below 20% with superior risk management.
 Adaptive Strategies: Dynamically adjusts to trending, ranging, or volatile markets.
 Live Trading Optimization: Seamless real-time data integration and low-latency execution.

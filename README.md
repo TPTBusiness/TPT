@@ -4,7 +4,7 @@
 The TPT Scalping Trading Model is a cutting-edge, high-frequency trading system tailored for the BTCUSDT pair on a 1-minute timeframe. It harnesses a hybrid architecture that blends a Transformer neural network for precise market trend forecasting with Proximal Policy Optimization (PPO) reinforcement learning for optimized trade execution. Designed for the volatile cryptocurrency market, this model thrives on capturing short-term price movements through rapid, frequent trades. A robust suite of technical indicators and a realistic trading environment make it a powerful tool for scalping enthusiasts.
 
 💡 Note: This open-source model is shared for educational and networking purposes. Premium models, boasting win rates up to 40–60%, drawdowns below 20%, and adaptive strategies for diverse market conditions, are available for purchase. Contact **TPTBusiness@proton.me** for inquiries about premium models, customizations, or licensing.
-
+Alternative contact option via session (https://getsession.org/) 058777f00166f75c89f315c687340bfffc90e6a605bea2a8c0f538779885b67179
 
 ## ✨ Features
 

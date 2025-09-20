@@ -42,7 +42,51 @@ The model was backtested from 2025-05-27 14:35:00 to 2025-06-10 11:54:00 (13.89 
 - Average Stop Loss: 3.0%
 - Average Take Profit: 4.0%
 
+## 🔍 Backtest Process
 
+The backtest evaluates the TPT Scalping Trading Model's performance using historical BTCUSDT 1-minute Kline data, simulating real-world trading conditions without risking capital. It tests three model variants—PPO-only, Transformer-only, and Hybrid (Transformer + PPO)—to provide a comprehensive assessment. Below is a step-by-step overview of the backtest process for transparency:
+
+1. **Data Preparation**:
+   - Loads historical Kline data (OHLCV: open, high, low, close, volume) from `data/klines/klines_BTCUSDT_default.parquet` or Binance API (via CCXT/python-binance).
+   - Limits data to ~1,000,000 rows (~2 years of 1m data) for efficiency.
+   - Converts timestamps to datetime, handling invalid values with fallbacks (e.g., generated ranges).
+   - Cleans data by removing NaNs, infinities, and zeros; ensures numeric types.
+   - Computes technical indicators using TA-Lib: RSI (14), MACD (12/26/9), SMA/EMA (20), ATR (14), Bollinger Bands (20/2), VWAP (14), Volume Profile (20), Fibonacci Levels (20-period range).
+   - Normalizes features using a `StandardScaler` (from `scaler.pkl` or created).
+
+2. **Model Loading**:
+   - Loads the latest PPO checkpoint (`ppo_checkpoint_*.zip`) and Transformer model (`.pth`) from `backtesting/results/models/`.
+   - Hybrid mode combines both, with Transformer predictions augmenting PPO inputs.
+
+3. **Trading Environment**:
+   - Uses a Gymnasium `TradingEnv` (vectorized for PPO/Hybrid, single for Transformer).
+   - Configures with starting capital (3000), max leverage (100), stop-loss/take-profit (3%/4%), max positions (10), and sequence length (32).
+   - Simulates trading with fees (maker 0.01%, taker 0.02%, funding 0.01%), margin, liquidation risks, and volatility-adjusted SL/TP via ATR.
+   - Observations include 15 features plus Transformer predictions (sigmoid, up/down probability).
+   - Actions are 5D: [trade_type (-1 short, +1 long), position_size (0-1 ratio), SL_pct, TP_pct, leverage (1-100)].
+   - Rewards balance profit, risk/drawdown penalties, holding time, SL/TP efficiency, position management, leverage bonuses, and win rate incentives.
+
+4. **Simulation**:
+   - Resets environment to initial state.
+   - Iterates through data:
+     - Fetches 32-step sequence, scaled, with Transformer prediction.
+     - Generates action: PPO (policy), Transformer (threshold-based), or Hybrid (augmented PPO).
+     - Executes trades if margin/position limits allow; applies fees.
+     - Updates positions, checking SL/TP/liquidation; logs trade details (entry/exit, profit, duration).
+     - Hybrid mode periodically fine-tunes Transformer and PPO on recent data.
+   - Closes all positions at data end.
+
+5. **Metrics and Reporting**:
+   - Calculates: winrate, risk-reward ratio, net profit, profit factor, max drawdown (%/abs), avg win/loss, trade frequency, avg duration/leverage/SL/TP, Sharpe ratio, Transformer precision/recall/F1.
+   - Saves trades (JSON/Excel), metrics (JSON), parameters (JSON), and models in `backtesting/results/backtest_<timestamp>/<variant>`.
+   - Generates PDF reports (per variant and combined) with equity curves, trade details, and metrics.
+
+**Transparency Notes**:
+- **Reproducibility**: Deterministic with fixed data; model stochasticity may vary results.
+- **Limitations**: Simulates slippage/latency via factors; assumes optimistic fills; no weekend gaps; risks overfitting.
+- **Live Trading**: Results may differ due to execution delays and liquidity. Premium models enhance adaptability.
+
+For custom backtests or live trading setups, refer to `example_simulation.py` or contact **TPTBusiness@proton.me**.
 
 **⚠️ Disclaimer: These metrics are from a backtest and may vary in live trading due to market dynamics, slippage, and latency. Premium models offer win rates of 40–60%, drawdowns below 20%, and enhanced adaptability. Contact TPTBusiness@proton.me for details.**
 
